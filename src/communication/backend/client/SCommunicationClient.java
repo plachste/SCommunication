@@ -46,8 +46,10 @@ public class SCommunicationClient {
         System.out.println("Client: got server socket");
     }
 
-    public void bind(Socket socket) {
+    public void bind(Socket socket) throws IOException {
         communicationSocket = socket;
+        os = new ObjectOutputStream(communicationSocket.getOutputStream());
+        is = new ObjectInputStream(communicationSocket.getInputStream());
     }
 
     public synchronized void send(Performable action) throws IOException {

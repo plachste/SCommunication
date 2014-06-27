@@ -43,6 +43,7 @@ public class SCommunicationTest {
         instance.connect(ip, port);
         
         instance.send(new PrintAction("Venca", "this is test message"));
+        server.send(0, new PrintAction("Server", "acknowledged"));
         //test output
         
         instance.stop();
