@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package communication.backend.utils;
 
 import communication.midleend.Performable;
@@ -9,33 +5,30 @@ import java.io.Serializable;
 
 /**
  *
- * @author plach_000
+ * @author Štěpán Plachý
+ * @author Václav Blažej
  */
 public abstract class SPacket implements Serializable {
 
-    public Performable action;
+    public final Performable action;
     protected int id;
 
-    public SPacket() {
+    public SPacket(Performable action) {
+        this.action = action;
         this.id = 0;
     }
 
-    public Performable getAction() {
-        return action;
+    public void performAction() {
+        action.perform();
     }
 
     public int getId() {
         return id;
     }
 
-    public void setAction(Performable action) {
-        this.action = action;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public abstract boolean isAsynchonous();
-    
 }

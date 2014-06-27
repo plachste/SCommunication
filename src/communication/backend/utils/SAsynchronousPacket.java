@@ -1,19 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package communication.backend.utils;
+
+import communication.midleend.Performable;
 
 /**
  *
- * @author plach_000
+ * @author Štěpán Plachý
+ * @author Václav Blažej
  */
 public class SAsynchronousPacket extends SPacket {
 
-    public SAsynchronousPacket() {
-        super();
+    public SAsynchronousPacket(Performable action) {
+        super(action);
     }
-    
+
     @Override
     public boolean isAsynchonous() {
         return true;

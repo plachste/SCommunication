@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Skarab
+ * @author Štěpán Plachý
+ * @author Václav Blažej
  */
 public class SCommunicationClientHandler implements Runnable {
 
@@ -21,8 +22,6 @@ public class SCommunicationClientHandler implements Runnable {
     private Socket communicationSocket;
     private ObjectInputStream is;
     private ObjectOutputStream os;
-    private SAsynchronousPacket asynchronousPacket;
-    private SSynchronousPacket synchronousPacket;
 
     public SCommunicationClientHandler(Socket socket) throws IOException {
         System.out.println("Server: got client socket");
@@ -37,14 +36,12 @@ public class SCommunicationClientHandler implements Runnable {
     }
 
     public synchronized void sendAsynchronous(Performable action) throws IOException {
-        asynchronousPacket.setAction(action);
-        os.writeObject(asynchronousPacket);
+        os.writeObject(new SAsynchronousPacket(action));
     }
 
     public synchronized void sendSynchronous(Performable action) throws IOException {
-        synchronousPacket.setAction(action);
-        sendObject(synchronousPacket);
-        synchronousPacket.inc();
+        sendObject(new SSynchronousPacket(action));
+        SSynchronousPacket.increasePacketId();
     }
     
     private synchronized void sendObject(SPacket o) throws IOException {
@@ -62,7 +59,7 @@ public class SCommunicationClientHandler implements Runnable {
             try {
                 packet = receive();
                 System.out.println("Server: packet " + packet);
-                packet.getAction().perform();
+                packet.performAction();
             } catch (ClassNotFoundException | IOException ex) {
                 Logger.getLogger(SCommunicationClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 /**
  *
- * @author Skarab
+ * @author Štěpán Plachý
+ * @author Václav Blažej
  */
 public class SCommunicationInformation implements Serializable {
 

@@ -1,6 +1,5 @@
 package communication.backend.server;
 
-import communication.backend.server.SCommunicationClientHandler;
 import communication.midleend.Performable;
 import communication.midleend.SListener;
 import java.io.IOException;
@@ -18,7 +17,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Skarab
+ * @author Štěpán Plachý
+ * @author Václav Blažej
  */
 public class SCommunicationServer {
 

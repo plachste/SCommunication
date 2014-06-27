@@ -16,7 +16,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Skarab
+ * @author Štěpán Plachý
+ * @author Václav Blažej
  */
 public class SCommunicationClient {
 
@@ -26,8 +27,7 @@ public class SCommunicationClient {
     private SCommunicationInformation information;
     private boolean running = true;
     private final Performable repairAction;
-    private SAsynchronousPacket asynchronousPacket;
-    
+
     public SCommunicationClient() {
         this(null);
     }
@@ -45,14 +45,13 @@ public class SCommunicationClient {
         is = new ObjectInputStream(communicationSocket.getInputStream());
         System.out.println("Client: got server socket");
     }
-    
+
     public void bind(Socket socket) {
         communicationSocket = socket;
     }
-    
+
     public synchronized void send(Performable action) throws IOException {
-        asynchronousPacket.setAction(action);
-        os.writeObject(asynchronousPacket);
+        os.writeObject(new SAsynchronousPacket(action));
     }
 
     private SPacket receive() throws IOException, ClassNotFoundException {
@@ -70,11 +69,11 @@ public class SCommunicationClient {
                         packet = receive();
                         if (packet.isAsynchonous() || ((SSynchronousPacket) packet).checkSynchronization(currentCount)) {
                             System.out.println("Client: packet " + packet);
-                            packet.getAction().perform();
+                            packet.performAction();
                         } else if (repairAction != null) {
                             send(repairAction);
                         }
-                        if(!packet.isAsynchonous()) {
+                        if (!packet.isAsynchonous()) {
                             currentCount = ((SSynchronousPacket) packet).getCount();
                         }
                     } catch (IOException | ClassNotFoundException ex) {
