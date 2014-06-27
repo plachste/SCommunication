@@ -55,13 +55,8 @@ public class SCommunicationClient {
         os.writeObject(asynchronousPacket);
     }
 
-    private SPacket receive() {
-        try {
-            return (SPacket) is.readObject();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(SCommunicationClient.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+    private SPacket receive() throws IOException, ClassNotFoundException {
+        return (SPacket) is.readObject();
     }
 
     public void start() {
@@ -71,20 +66,19 @@ public class SCommunicationClient {
                 SPacket packet;
                 int currentCount = 0;
                 while (running) {
-                    packet = receive();
-                    if (packet.isAsynchonous() || ((SSynchronousPacket) packet).checkSynchronization(currentCount)) {
-                        System.out.println("Client: packet " + packet);
-                        packet.getAction().perform();
-                    } else if (repairAction != null) {
-                        try {
+                    try {
+                        packet = receive();
+                        if (packet.isAsynchonous() || ((SSynchronousPacket) packet).checkSynchronization(currentCount)) {
+                            System.out.println("Client: packet " + packet);
+                            packet.getAction().perform();
+                        } else if (repairAction != null) {
                             send(repairAction);
-                        } catch (IOException ex) {
-                            Logger.getLogger(SCommunicationClient.class.getName()).log(Level.SEVERE, null, ex);
-                            continue;
                         }
-                    }
-                    if(!packet.isAsynchonous()) {
-                        currentCount = ((SSynchronousPacket) packet).getCount();
+                        if(!packet.isAsynchonous()) {
+                            currentCount = ((SSynchronousPacket) packet).getCount();
+                        }
+                    } catch (IOException | ClassNotFoundException ex) {
+                        Logger.getLogger(SCommunicationClient.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 System.out.println("Client: terminating socket");

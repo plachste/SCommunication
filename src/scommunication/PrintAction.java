@@ -13,9 +13,9 @@ import communication.midleend.Performable;
 public class PrintAction implements Performable {
     
     String message;
-
-    public PrintAction(String message) {
-        this.message = message;
+    
+    public void setMessage(String message, String ident) {
+        this.message = "<" + ident + "> " + message;
     }
 
     @Override
