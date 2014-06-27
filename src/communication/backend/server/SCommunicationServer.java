@@ -40,8 +40,8 @@ public class SCommunicationServer {
         connectionsCounter = 0;
     }
 
-    public void start() {
-        connectionService.start();
+    public boolean start() {
+        return connectionService.start();
     }
 
     public void stop() {
@@ -84,16 +84,24 @@ public class SCommunicationServer {
 
     private class SCommunicationServerCreateService implements Runnable {
 
+        private int port;
         private ServerSocket serverSocket;
         private boolean running;
 
         SCommunicationServerCreateService(int port) throws IOException {
-            serverSocket = new ServerSocket(port);
+            this.port = port;
+            serverSocket = null;
             running = false;
         }
 
-        public void start() {
+        public boolean start() {
+            try {
+                serverSocket = new ServerSocket(port);
+            } catch (IOException ex) {
+                return false;
+            }
             new Thread(this).start();
+            return true;
         }
 
         public void stop() {
