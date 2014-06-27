@@ -4,6 +4,7 @@ import communication.backend.client.SCommunicationClient;
 import communication.backend.server.SCommunicationServer;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import packets.PrintAction;
 
 public class SCommunicationTest {
 
@@ -29,6 +30,21 @@ public class SCommunicationTest {
         SCommunicationClient instance = new SCommunicationClient();
         assert server.start();
         instance.connect(ip, port);
+        instance.stop();
+        server.stop();
+    }
+
+    @Test
+    public void sendPrintAction() throws Exception {
+        System.out.println("initialize");
+        SCommunicationServer server = new SCommunicationServer(port);
+        SCommunicationClient instance = new SCommunicationClient();
+        server.start();
+        instance.connect(ip, port);
+        
+        instance.send(new PrintAction("Venca", "this is test message"));
+        //test output
+        
         instance.stop();
         server.stop();
     }
