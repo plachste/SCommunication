@@ -28,6 +28,10 @@ public class SCommunicationServer {
     private int counter;
     private SListener listener;
 
+    public SCommunicationServer(int port) throws IOException {
+        this(port, new SListener());
+    }
+
     public SCommunicationServer(int port, SListener listener) throws IOException {
         this.listener = listener;
         connectionService = new SCommunicationServerCreateService(port);
