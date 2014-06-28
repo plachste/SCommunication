@@ -34,7 +34,7 @@ public class SSynchronousPacket extends SPacket {
     }
 
     @Override
-    public boolean isAsynchonous() {
+    public boolean isAsynchronous() {
         return false;
     }
 }

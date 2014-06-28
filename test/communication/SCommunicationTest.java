@@ -25,7 +25,7 @@ public class SCommunicationTest {
 
     @Test
     public void connect() throws Exception {
-        System.out.println("initialize");
+        System.out.println("connect");
         SCommunicationServer server = new SCommunicationServer(port);
         SCommunicationClient instance = new SCommunicationClient();
         assert server.start();
@@ -36,16 +36,16 @@ public class SCommunicationTest {
 
     @Test
     public void sendPrintAction() throws Exception {
-        System.out.println("initialize");
+        System.out.println("sendPrintAction");
         SCommunicationServer server = new SCommunicationServer(port);
         SCommunicationClient instance = new SCommunicationClient();
         server.start();
         instance.connect(ip, port);
-        
+
         instance.send(new PrintAction("Venca", "this is test message"));
         server.send(0, new PrintAction("Server", "acknowledged"));
         //test output
-        
+
         instance.stop();
         server.stop();
     }

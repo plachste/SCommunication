@@ -30,5 +30,5 @@ public abstract class SPacket implements Serializable {
         this.id = id;
     }
 
-    public abstract boolean isAsynchonous();
+    public abstract boolean isAsynchronous();
 }

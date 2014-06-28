@@ -1,8 +1,8 @@
 package communication.backend.client;
 
 import communication.backend.utils.SAsynchronousPacket;
-import communication.backend.utils.SPacket;
 import communication.backend.utils.SCommunicationInformation;
+import communication.backend.utils.SPacket;
 import communication.backend.utils.SSynchronousPacket;
 import communication.midleend.Performable;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Communication class on client side.
  *
  * @author Štěpán Plachý
  * @author Václav Blažej
@@ -25,7 +26,7 @@ public class SCommunicationClient {
     private ObjectOutputStream os;
     private ObjectInputStream is;
     private SCommunicationInformation information;
-    private boolean running = true;
+    private boolean running;
     private final Performable repairAction;
 
     public SCommunicationClient() {
@@ -35,6 +36,9 @@ public class SCommunicationClient {
     public SCommunicationClient(final Performable repairAction) {
         this.repairAction = repairAction;
         communicationSocket = new Socket();
+        os = null;
+        is = null;
+        running = true;
     }
 
     public void connect(String ip, int port) throws IOException {
@@ -57,7 +61,12 @@ public class SCommunicationClient {
     }
 
     private SPacket receive() throws IOException, ClassNotFoundException {
-        return (SPacket) is.readObject();
+        Object o = is.readObject();
+        if (o instanceof SPacket) {
+            return (SPacket) o;
+        } else {
+            return null; // NullPacket - neutral packet on every action
+        }
     }
 
     public void start() {
@@ -69,13 +78,13 @@ public class SCommunicationClient {
                 while (running) {
                     try {
                         packet = receive();
-                        if (packet.isAsynchonous() || ((SSynchronousPacket) packet).checkSynchronization(currentCount)) {
+                        if (packet.isAsynchronous() || ((SSynchronousPacket) packet).checkSynchronization(currentCount)) {
                             System.out.println("Client: packet " + packet);
                             packet.performAction();
                         } else if (repairAction != null) {
                             send(repairAction);
                         }
-                        if (!packet.isAsynchonous()) {
+                        if (!packet.isAsynchronous()) {
                             currentCount = ((SSynchronousPacket) packet).getCount();
                         }
                     } catch (IOException | ClassNotFoundException ex) {
