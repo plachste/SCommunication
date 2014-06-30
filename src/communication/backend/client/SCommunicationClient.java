@@ -5,6 +5,7 @@ import communication.backend.utils.SCommunicationInformation;
 import communication.backend.utils.SPacket;
 import communication.backend.utils.SSynchronousPacket;
 import communication.midleend.Performable;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

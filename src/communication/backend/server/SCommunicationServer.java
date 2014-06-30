@@ -98,6 +98,7 @@ public class SCommunicationServer {
             try {
                 serverSocket = new ServerSocket(port);
             } catch (IOException ex) {
+                Logger.getLogger(SCommunicationServer.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
             new Thread(this).start();
@@ -117,12 +118,12 @@ public class SCommunicationServer {
         public void run() {
             running = true;
             while (running) {
-                Socket s = null;
                 try {
-                    s = serverSocket.accept();
+                    Socket s = serverSocket.accept();
                     SCommunicationClientHandler h = new SCommunicationClientHandler(s);
                     new Thread(h).start();
-                    while (connections.containsKey(++connectionsCounter)) {
+                    while (connections.containsKey(connectionsCounter)) {
+                        connectionsCounter = (connectionsCounter + 1) % 70000;
                     }
                     connections.put(connectionsCounter, h);
                     listener.connectionCreated();

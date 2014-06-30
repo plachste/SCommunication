@@ -13,7 +13,7 @@ public class SCommunicationTest {
 
     public SCommunicationTest() {
     }
-
+/*
     @Test
     public void initialize() throws Exception {
         System.out.println("initialize");
@@ -33,20 +33,27 @@ public class SCommunicationTest {
         instance.stop();
         server.stop();
     }
-
+*/
     @Test
     public void sendPrintAction() throws Exception {
         System.out.println("sendPrintAction");
         SCommunicationServer server = new SCommunicationServer(port);
         SCommunicationClient instance = new SCommunicationClient();
-        server.start();
+        assert server.start();
         instance.connect(ip, port);
+        instance.start();
 
         instance.send(new PrintAction("Venca", "this is test message"));
         server.send(0, new PrintAction("Server", "acknowledged"));
-        //test output
 
-        instance.stop();
+        
+        for(int i = 0; i < 10; i++) {
+            instance.send(new PrintAction("Client", String.valueOf(i)));
+            server.send(0, new PrintAction("Server", String.valueOf(i)));
+        }
+        //test output
+        Thread.sleep(20);
         server.stop();
+        instance.stop();
     }
 }
