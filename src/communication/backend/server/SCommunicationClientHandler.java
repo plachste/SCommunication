@@ -41,7 +41,7 @@ public class SCommunicationClientHandler implements Runnable {
 
     public synchronized void sendAsynchronous(Performable action) throws IOException {
         asynchronousPacket.setAction(action);
-        os.writeObject(asynchronousPacket);
+        sendObject(asynchronousPacket);
     }
 
     public synchronized void sendSynchronous(Performable action) throws IOException {
@@ -51,6 +51,7 @@ public class SCommunicationClientHandler implements Runnable {
     }
     
     private synchronized void sendObject(SPacket o) throws IOException {
+        os.reset();
         os.writeObject(o);
     }
 

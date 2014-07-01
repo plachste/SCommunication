@@ -62,6 +62,7 @@ public class SCommunicationClient {
 
     public synchronized void send(Performable action) throws IOException {
         asynchronousPacket.setAction(action);
+        os.reset();
         os.writeObject(asynchronousPacket);
     }
 
