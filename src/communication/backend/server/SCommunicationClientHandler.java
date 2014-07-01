@@ -39,7 +39,7 @@ public class SCommunicationClientHandler implements Runnable {
         communicationSocket.close();
     }
 
-    public synchronized void sendAsynchronous(Performable action) throws IOException {
+    public void sendAsynchronous(Performable action) throws IOException {
         asynchronousPacket.setAction(action);
         sendObject(asynchronousPacket);
     }
