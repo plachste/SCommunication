@@ -1,9 +1,9 @@
 package communication.backend.server;
 
-import communication.backend.utils.SAsynchronousPacket;
-import communication.backend.utils.SPacket;
-import communication.backend.utils.SSynchronousPacket;
-import communication.midleend.Performable;
+import communication.backend.utilities.SAsynchronousPacket;
+import communication.backend.utilities.SPacket;
+import communication.backend.utilities.SSynchronousPacket;
+import communication.frontend.utilities.Performable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

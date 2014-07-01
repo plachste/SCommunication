@@ -1,7 +1,7 @@
 package communication.backend.server;
 
-import communication.midleend.Performable;
-import communication.midleend.SListener;
+import communication.frontend.utilities.Performable;
+import communication.frontend.utilities.SListener;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;

@@ -1,6 +1,6 @@
 package packets;
 
-import communication.midleend.Performable;
+import communication.frontend.utilities.Performable;
 
 /**
  *
