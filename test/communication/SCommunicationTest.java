@@ -4,6 +4,7 @@ import communication.backend.client.SCommunicationClient;
 import communication.backend.server.SCommunicationServer;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import packets.PrintAction;
 
 public class SCommunicationTest {
@@ -13,7 +14,8 @@ public class SCommunicationTest {
 
     public SCommunicationTest() {
     }
-/*
+
+    @Ignore
     @Test
     public void initialize() throws Exception {
         System.out.println("initialize");
@@ -23,6 +25,7 @@ public class SCommunicationTest {
         // fail("The test case is a prototype.");
     }
 
+    @Ignore
     @Test
     public void connect() throws Exception {
         System.out.println("connect");
@@ -33,7 +36,7 @@ public class SCommunicationTest {
         instance.stop();
         server.stop();
     }
-*/
+
     @Test
     public void sendPrintAction() throws Exception {
         System.out.println("sendPrintAction");
@@ -43,16 +46,12 @@ public class SCommunicationTest {
         instance.connect(ip, port);
         instance.start();
 
-        instance.send(new PrintAction("Venca", "this is test message"));
-        server.send(0, new PrintAction("Server", "acknowledged"));
-
-        
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             instance.send(new PrintAction("Client", String.valueOf(i)));
             server.send(0, new PrintAction("Server", String.valueOf(i)));
         }
-        //test output
-        Thread.sleep(20);
+        // wait for test output
+        Thread.sleep(50);
         server.stop();
         instance.stop();
     }
