@@ -47,8 +47,12 @@ public class SCommunicationTest {
         instance.start();
 
         for (int i = 0; i < 10; i++) {
-            instance.send(new PrintAction("Client", String.valueOf(i)));
-            server.send(0, new PrintAction("Server", String.valueOf(i)));
+            PrintAction clientAction = new PrintAction("Client", String.valueOf(i));
+            //System.out.println("?" + clientAction.message + "?");
+            instance.send(clientAction);
+            PrintAction serverAction = new PrintAction("Server", String.valueOf(i));
+            //System.out.println("!" + serverAction.message + "!");
+            server.send(0, serverAction);
         }
         // wait for test output
         Thread.sleep(50);

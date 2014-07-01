@@ -9,7 +9,7 @@ import communication.frontend.utilities.Performable;
  */
 public class PrintAction implements Performable {
 
-    final String message;
+    public final String message;
 
     public PrintAction(String ident, String message) {
         this.message = "<" + ident + "> " + message;

@@ -67,7 +67,7 @@ public class SCommunicationServer {
         SCommunicationClientHandler c = connections.get(id);
         connections.remove(id);
         c.disconnect();
-        listener.connectionRemoved();
+        listener.connectionRemoved(id);
     }
 
     @Deprecated
@@ -126,7 +126,7 @@ public class SCommunicationServer {
                         connectionsCounter = (connectionsCounter + 1) % 70000;
                     }
                     connections.put(connectionsCounter, h);
-                    listener.connectionCreated();
+                    listener.connectionCreated(connectionsCounter);
                 } catch (IOException ex) {
                     Logger.getLogger(SCommunicationServer.class.getName()).log(Level.SEVERE, null, ex);
                 }

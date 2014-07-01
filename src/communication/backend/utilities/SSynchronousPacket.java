@@ -9,11 +9,6 @@ import communication.frontend.utilities.Performable;
  */
 public class SSynchronousPacket extends SPacket {
 
-    private static volatile int superCount = 0;
-
-    public static void increasePacketId() {
-        SSynchronousPacket.superCount++;
-    }
     private int count;
 
     public SSynchronousPacket(Performable action) {
@@ -22,15 +17,19 @@ public class SSynchronousPacket extends SPacket {
     }
 
     public int getCount() {
-        return superCount;
+        return count;
     }
 
     public void setCount(int count) {
         this.count = count;
     }
 
+    public void incrementCount() {
+        count++;
+    }
+    
     public boolean checkSynchronization(int count) {
-        return this.superCount == count + 1; // functional for overflow
+        return this.count == count + 1; // functional for overflow
     }
 
     @Override

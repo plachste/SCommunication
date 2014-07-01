@@ -22,6 +22,8 @@ public class SCommunicationClientHandler implements Runnable {
     private Socket communicationSocket;
     private ObjectInputStream is;
     private ObjectOutputStream os;
+    private SAsynchronousPacket asynchronousPacket;
+    private SSynchronousPacket synchronousPacket;
 
     public SCommunicationClientHandler(Socket socket) throws IOException {
         System.out.println("Server: got client socket");
@@ -29,6 +31,8 @@ public class SCommunicationClientHandler implements Runnable {
         this.running = true;
         is = new ObjectInputStream(communicationSocket.getInputStream());
         os = new ObjectOutputStream(communicationSocket.getOutputStream());
+        asynchronousPacket = new SAsynchronousPacket(null);
+        synchronousPacket = new SSynchronousPacket(null);
     }
 
     public void disconnect() throws IOException {
@@ -36,12 +40,14 @@ public class SCommunicationClientHandler implements Runnable {
     }
 
     public synchronized void sendAsynchronous(Performable action) throws IOException {
-        os.writeObject(new SAsynchronousPacket(action));
+        asynchronousPacket.setAction(action);
+        os.writeObject(asynchronousPacket);
     }
 
     public synchronized void sendSynchronous(Performable action) throws IOException {
-        sendObject(new SSynchronousPacket(action));
-        SSynchronousPacket.increasePacketId();
+        synchronousPacket.setAction(action);
+        sendObject(synchronousPacket);
+        synchronousPacket.incrementCount();
     }
     
     private synchronized void sendObject(SPacket o) throws IOException {

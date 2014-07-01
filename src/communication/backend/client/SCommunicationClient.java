@@ -29,6 +29,8 @@ public class SCommunicationClient {
     private SCommunicationInformation information;
     private boolean running;
     private final Performable repairAction;
+    private SAsynchronousPacket asynchronousPacket;
+    private SSynchronousPacket synchronousPacket;
 
     public SCommunicationClient() {
         this(null);
@@ -40,6 +42,7 @@ public class SCommunicationClient {
         os = null;
         is = null;
         running = true;
+        asynchronousPacket = new SAsynchronousPacket(null);
     }
 
     public void connect(String ip, int port) throws IOException {
@@ -58,7 +61,8 @@ public class SCommunicationClient {
     }
 
     public synchronized void send(Performable action) throws IOException {
-        os.writeObject(new SAsynchronousPacket(action));
+        asynchronousPacket.setAction(action);
+        os.writeObject(asynchronousPacket);
     }
 
     private SPacket receive() throws IOException, ClassNotFoundException {

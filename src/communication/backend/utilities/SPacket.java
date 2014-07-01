@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public abstract class SPacket implements Serializable {
 
-    public final Performable action;
+    protected Performable action;
     protected int id;
 
     public SPacket(Performable action) {
@@ -28,6 +28,14 @@ public abstract class SPacket implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setAction(Performable action) {
+        this.action = action;
+    }
+    
+    public Performable getAction() {
+        return action;
     }
 
     public abstract boolean isAsynchronous();
