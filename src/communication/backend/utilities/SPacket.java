@@ -19,6 +19,7 @@ public abstract class SPacket implements Serializable {
     }
 
     public void performAction() {
+        SLoggerService.print("Server: action - " + action.toString());
         action.perform();
     }
 

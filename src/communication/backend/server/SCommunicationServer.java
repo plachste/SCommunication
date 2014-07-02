@@ -1,5 +1,6 @@
 package communication.backend.server;
 
+import communication.backend.utilities.SLoggerService;
 import communication.frontend.utilities.Performable;
 import communication.frontend.utilities.SListener;
 import java.io.IOException;
@@ -120,6 +121,7 @@ public class SCommunicationServer {
             while (running) {
                 try {
                     Socket s = serverSocket.accept();
+                    SLoggerService.print("Server: new connection");
                     SCommunicationClientHandler h = new SCommunicationClientHandler(s);
                     new Thread(h).start();
                     while (connections.containsKey(connectionsCounter)) {
