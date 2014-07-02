@@ -1,5 +1,6 @@
 package communication.backend.client;
 
+import communication.backend.utilities.SActionNull;
 import communication.backend.utilities.SAsynchronousPacket;
 import communication.backend.utilities.SCommunicationInformation;
 import communication.backend.utilities.SLoggerService;
@@ -71,7 +72,7 @@ public class SCommunicationClient {
         if (o instanceof SPacket) {
             return (SPacket) o;
         } else {
-            return null; // NullPacket - neutral packet on every action
+            return new SAsynchronousPacket(new SActionNull());
         }
     }
 

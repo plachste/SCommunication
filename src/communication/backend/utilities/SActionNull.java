@@ -10,7 +10,7 @@ import communication.frontend.utilities.Performable;
  *
  * @author plach_000
  */
-public class SNullAction implements Performable{
+public class SActionNull implements Performable {
 
     @Override
     public void perform() {
