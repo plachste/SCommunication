@@ -2,6 +2,7 @@ package communication.backend.client;
 
 import communication.backend.utilities.SAsynchronousPacket;
 import communication.backend.utilities.SCommunicationInformation;
+import communication.backend.utilities.SLoggerService;
 import communication.backend.utilities.SPacket;
 import communication.backend.utilities.SSynchronousPacket;
 import communication.frontend.utilities.Performable;
@@ -46,12 +47,11 @@ public class SCommunicationClient {
     }
 
     public void connect(String ip, int port) throws IOException {
-        System.out.println("Client: starting");
-        System.out.println("Client: connecting to: " + ip + " " + port);
+        SLoggerService.print("Client: connecting to: " + ip + " " + port);
         communicationSocket.connect(new InetSocketAddress(InetAddress.getByName(ip), port));
         os = new ObjectOutputStream(communicationSocket.getOutputStream());
         is = new ObjectInputStream(communicationSocket.getInputStream());
-        System.out.println("Client: got server socket");
+        SLoggerService.print("Client: got server socket");
     }
 
     public void bind(Socket socket) throws IOException {
@@ -85,7 +85,7 @@ public class SCommunicationClient {
                     try {
                         packet = receive();
                         if (packet.isAsynchronous() || ((SSynchronousPacket) packet).checkSynchronization(currentCount)) {
-                            System.out.println("Client: packet " + packet);
+                            SLoggerService.print("Client: packet " + packet);
                             packet.performAction();
                         } else if (repairAction != null) {
                             send(repairAction);
@@ -97,7 +97,7 @@ public class SCommunicationClient {
                         Logger.getLogger(SCommunicationClient.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                System.out.println("Client: terminating socket");
+                SLoggerService.print("Client: terminating socket");
             }
         }).start();
     }

@@ -1,6 +1,7 @@
 package communication.backend.server;
 
 import communication.backend.utilities.SAsynchronousPacket;
+import communication.backend.utilities.SLoggerService;
 import communication.backend.utilities.SPacket;
 import communication.backend.utilities.SSynchronousPacket;
 import communication.frontend.utilities.Performable;
@@ -26,7 +27,7 @@ public class SCommunicationClientHandler implements Runnable {
     private SSynchronousPacket synchronousPacket;
 
     public SCommunicationClientHandler(Socket socket) throws IOException {
-        System.out.println("Server: got client socket");
+        SLoggerService.print("Server: got client socket");
         this.communicationSocket = socket;
         this.running = true;
         is = new ObjectInputStream(communicationSocket.getInputStream());
@@ -65,7 +66,7 @@ public class SCommunicationClientHandler implements Runnable {
         while (running) {
             try {
                 packet = receive();
-                System.out.println("Server: packet " + packet);
+                SLoggerService.print("Server: packet " + packet);
                 packet.performAction();
             } catch (ClassNotFoundException | IOException ex) {
                 Logger.getLogger(SCommunicationClientHandler.class.getName()).log(Level.SEVERE, null, ex);
